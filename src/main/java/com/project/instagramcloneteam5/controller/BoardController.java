@@ -6,12 +6,14 @@ import com.project.instagramcloneteam5.exception.advice.PrivateException;
 import com.project.instagramcloneteam5.model.dto.BoardGetResponseDto;
 import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
 import com.project.instagramcloneteam5.model.dto.BoardUpdateResponseDto;
+import com.project.instagramcloneteam5.response.Response;
 import com.project.instagramcloneteam5.service.BoardService;
 import com.project.instagramcloneteam5.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -56,15 +58,15 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping("/board/write")
-    public ExceptionResponseDto uploadBoard(@RequestPart("content") BoardRequestDto boardRequestDto,
-                                           @RequestPart("imgUrl") List<MultipartFile> multipartFiles) {
+    public Response uploadBoard(@RequestPart("content") BoardRequestDto boardRequestDto,
+                                @RequestPart("imgUrl") List<MultipartFile> multipartFiles) {
         if (multipartFiles == null) {
             throw new PrivateException(Code.WRONG_INPUT_CONTENT);
         }
         List<String> imgPaths = s3Service.upload(multipartFiles);
         System.out.println("IMG 경로들 : " + imgPaths);
         boardService.uploadBoard(boardRequestDto, imgPaths);
-        return new ExceptionResponseDto(Code.OK);
+        return Response.success();
 
     }
 
