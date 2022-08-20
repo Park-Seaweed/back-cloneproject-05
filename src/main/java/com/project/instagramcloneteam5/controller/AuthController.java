@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.http.HttpHeaders;
 
 import static com.project.instagramcloneteam5.response.Response.success;
@@ -27,14 +28,15 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response register(@RequestBody SignUpRequestDto signUpRequestDto) {
-        return Response.success(memberService.signUp(signUpRequestDto));
+    public Response register(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
+        memberService.signUp(signUpRequestDto);
+        return Response.success();
 
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public Response logIn(@RequestBody LoginRequestDto req) {
+    public Response logIn(@Valid @RequestBody LoginRequestDto req) {
         return Response.success(memberService.logIn(req));
     }
 

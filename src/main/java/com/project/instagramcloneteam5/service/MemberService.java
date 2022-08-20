@@ -6,6 +6,8 @@ import com.project.instagramcloneteam5.exception.support.LoginFailureException;
 import com.project.instagramcloneteam5.exception.support.MemberNotFoundException;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
+import com.project.instagramcloneteam5.exception.support.MemberUsernameAlreadyExistsException;
+import com.project.instagramcloneteam5.model.Authority;
 import com.project.instagramcloneteam5.model.Member;
 import com.project.instagramcloneteam5.model.RefreshToken;
 import com.project.instagramcloneteam5.repository.MemberRepository;
@@ -38,19 +40,20 @@ public class MemberService {
 
 
 
-    public boolean signUp(SignUpRequestDto signUpRequestDto) {
+    public void signUp(SignUpRequestDto signUpRequestDto) {
+        validateSignUpInfo(signUpRequestDto);
 
-        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
-            throw new PrivateException(Code.SIGNUP_USERNAME_DUPLICATE_ERROR);
+
 
         Member member = Member.builder()
                 .username(signUpRequestDto.getUsername())
                 .nickname(signUpRequestDto.getNickname())
+                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                .authority(Authority.ROLE_USER)
                 .build();
 
         memberRepository.save(member);
 
-        return true;
     }
 
     @Transactional
@@ -78,12 +81,11 @@ public class MemberService {
 
         refreshTokenRepository.save(refreshToken);
 
-        Optional<Member> loginUserName = memberRepository.findByUsername(req.getUsername());
 
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
                 .accessToken(tokenDto.getAccessToken())
                 .refreshToken(tokenDto.getRefreshToken())
-                .username(String.valueOf(loginUserName))
+                .username(req.getUsername())
                 .build();
 
 
@@ -129,11 +131,11 @@ public class MemberService {
     }
 
 
-//    private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
-//        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
-//            throw new MemberUsernameAlreadyExistsException(signUpRequestDto.getUsername());
-//
-//    }
+    private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
+        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
+            throw new MemberUsernameAlreadyExistsException(signUpRequestDto.getUsername());
+
+    }
 
 
     private void validatePassword(LoginRequestDto loginRequestDto, Member member) {

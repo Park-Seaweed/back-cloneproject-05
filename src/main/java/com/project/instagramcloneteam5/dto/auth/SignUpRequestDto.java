@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -13,12 +14,16 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class SignUpRequestDto {
 
+    @NotBlank(message = "아이디를 입력해주세요.")
     private String username;
 
+    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 
-    private String nickname;
 
+    @NotBlank(message = "닉네임을 입력해주세요.")
+    @Size(min=2, message = "닉네임이 너무 짧습니다.")
+    private String nickname;
 
 
 }
