@@ -27,7 +27,7 @@ public class Board extends Timestamped{
     private int likeCount;
 
     @Transient
-    private final List<Image> imgList = new ArrayList<>();
+    private final List<Image> imageList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

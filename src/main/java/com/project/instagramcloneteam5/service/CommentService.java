@@ -6,6 +6,8 @@ import com.project.instagramcloneteam5.exception.advice.PrivateException;
 import com.project.instagramcloneteam5.model.Board;
 import com.project.instagramcloneteam5.model.Comment;
 import com.project.instagramcloneteam5.model.Member;
+import com.project.instagramcloneteam5.model.dto.CommentRequestDto;
+import com.project.instagramcloneteam5.model.dto.CommentResponseDto;
 import com.project.instagramcloneteam5.repository.BoardRepository;
 
 import com.project.instagramcloneteam5.repository.CommentRepository;
@@ -25,7 +27,7 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public CommentResponseDto boardComment( Long boardId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto boardComment(Long boardId, CommentRequestDto commentRequestDto) {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new PrivateException(Code.NOT_FOUND_POST));
 

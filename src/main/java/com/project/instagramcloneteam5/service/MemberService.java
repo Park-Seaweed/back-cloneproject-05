@@ -9,6 +9,7 @@ import com.project.instagramcloneteam5.model.Authority;
 import com.project.instagramcloneteam5.model.Member;
 import com.project.instagramcloneteam5.repository.MemberRepository;
 import com.project.instagramcloneteam5.service.validator.Validator;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@AllArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;

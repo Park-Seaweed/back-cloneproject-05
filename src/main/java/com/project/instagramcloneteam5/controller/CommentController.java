@@ -3,6 +3,9 @@ package com.project.instagramcloneteam5.controller;
 
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.ExceptionResponseDto;
+import com.project.instagramcloneteam5.model.dto.CommentRequestDto;
+import com.project.instagramcloneteam5.model.dto.CommentResponseDto;
+import com.project.instagramcloneteam5.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
