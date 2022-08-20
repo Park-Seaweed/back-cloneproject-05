@@ -13,6 +13,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "member_id")
 @Entity
 public class Member extends AuditingFields {
     @Id

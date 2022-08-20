@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment extends Timestamped{
+public class Comment extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;

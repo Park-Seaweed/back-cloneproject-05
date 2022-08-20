@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Board extends Timestamped{
+public class Board extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
