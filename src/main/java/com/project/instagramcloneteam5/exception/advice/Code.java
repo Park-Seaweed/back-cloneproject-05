@@ -7,9 +7,6 @@ import org.springframework.http.HttpStatus;
 public enum Code {
     OK(HttpStatus.OK, "0", "정상"),
 
-    SIGNUP_EMAIL_FORM_ERROR(HttpStatus.BAD_REQUEST, "100", "email 형식을 맞춰주세요"),
-    SIGNUP_EMAIL_DUPLICATE_ERROR(HttpStatus.BAD_REQUEST, "101", "email 이 중복됩니다."),
-    SIGNUP_USERNAME_FORM_ERROR(HttpStatus.BAD_REQUEST, "102", "username 형식을 맞춰주세요"),
     SIGNUP_USERNAME_DUPLICATE_ERROR(HttpStatus.BAD_REQUEST, "103", "username 이 중복됩니다."),
 
     LOGIN_EMAIL_FAIL(HttpStatus.NOT_FOUND, "110", "해당 하는 email 이 없습니다"),
