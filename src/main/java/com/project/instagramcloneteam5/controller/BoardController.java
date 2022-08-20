@@ -3,7 +3,6 @@ package com.project.instagramcloneteam5.controller;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.ExceptionResponseDto;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
-import com.project.instagramcloneteam5.model.Board;
 import com.project.instagramcloneteam5.model.dto.BoardGetResponseDto;
 import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
 import com.project.instagramcloneteam5.model.dto.BoardUpdateResponseDto;
