@@ -40,8 +40,13 @@ public class MemberService {
 
     public boolean signUp(SignUpRequestDto signUpRequestDto) {
 
-        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
+        if (memberRepository.existsByUsername(signUpRequestDto.getUsername())) {
             throw new PrivateException(Code.SIGNUP_USERNAME_DUPLICATE_ERROR);
+        }else if(memberRepository.findByNickname(signUpRequestDto.getNickname())){
+            throw new PrivateException(Code.WRONG_INPUT_NICKNAME);
+        }
+
+
 
         Member member = Member.builder()
                 .username(signUpRequestDto.getUsername())
@@ -78,12 +83,11 @@ public class MemberService {
 
         refreshTokenRepository.save(refreshToken);
 
-        Optional<Member> loginUserName = memberRepository.findByUsername(req.getUsername());
 
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
                 .accessToken(tokenDto.getAccessToken())
                 .refreshToken(tokenDto.getRefreshToken())
-                .username(String.valueOf(loginUserName))
+                .username(req.getUsername())
                 .build();
 
 
