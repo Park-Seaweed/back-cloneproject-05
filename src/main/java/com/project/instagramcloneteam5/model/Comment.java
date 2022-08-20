@@ -2,6 +2,7 @@ package com.project.instagramcloneteam5.model;
 
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
+import com.project.instagramcloneteam5.model.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,7 @@ public class Comment extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private String content;
+    private String comment;
 
     @Column
     private int likeCount;
@@ -47,11 +48,6 @@ public class Comment extends Timestamped{
         this.member = member;
     }
 
-    public void update(CommentRequestDto commentRequestDto) {
-        if (!StringUtils.hasText(commentRequestDto.getComment())) {
-            throw new PrivateException(Code.WRONG_INPUT_COMMENT);
-        }
-        this.comment = commentRequestDto.getComment();
-    }
+
 
 }

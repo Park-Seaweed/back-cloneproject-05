@@ -23,4 +23,9 @@ public class Image {
     @JoinColumn(name = "board_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Board board;
+
+    public Image(String imgUrl, Board board) {
+        this.imgUrl = imgUrl;
+        this.board = board;
+    }
 }

@@ -28,4 +28,4 @@ public class BoardGetResponseDto {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(localDateTime);
     }
 }
-}
+
