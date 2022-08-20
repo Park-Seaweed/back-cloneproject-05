@@ -5,8 +5,10 @@ import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.ExceptionResponseDto;
 import com.project.instagramcloneteam5.model.dto.CommentRequestDto;
 import com.project.instagramcloneteam5.model.dto.CommentResponseDto;
+import com.project.instagramcloneteam5.response.Response;
 import com.project.instagramcloneteam5.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,9 +22,10 @@ public class CommentController {
 
     // Comment 작성
     @PostMapping("/boards/details/{boardId}")
-    public ExceptionResponseDto postComment(@PathVariable(name="boardId") Long boardId, @RequestBody CommentRequestDto commentRequestDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response postComment(@PathVariable(name="boardId") Long boardId, @RequestBody CommentRequestDto commentRequestDto) {
         CommentResponseDto commentResponseDto = commentService.boardComment(boardId, commentRequestDto);
-        return new ExceptionResponseDto(Code.OK, commentResponseDto);
+        return Response.success(commentResponseDto);
     }
 
     // Comment 수정
@@ -32,8 +35,9 @@ public class CommentController {
     // Comment 삭제
     // 유저 정보 추가
     @DeleteMapping("/boards/details/comment/{commentId}")
-    public ExceptionResponseDto deleteComment(@PathVariable Long commentId) {
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
-        return new ExceptionResponseDto(Code.OK);
+        return Response.success();
     }
 }

@@ -10,6 +10,7 @@ import com.project.instagramcloneteam5.response.Response;
 import com.project.instagramcloneteam5.service.BoardService;
 import com.project.instagramcloneteam5.service.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,11 +28,13 @@ public class BoardController {
 
     // 게시글 전체 조회
     @GetMapping("/boards")
-    public Map<String, List<BoardGetResponseDto>> getAllBoard(){ return boardService.getAllBoard();}
+    @ResponseStatus(HttpStatus.OK)
+    public Response getAllBoard(){ return Response.success(boardService.getAllBoard());}
 
     // 메인 페이지 무한 스크롤
     @GetMapping("/boardScroll")
-    public Map<String, List<BoardGetResponseDto>> getBoardSlice(
+    @ResponseStatus(HttpStatus.OK)
+    public Response getBoardSlice(
             @RequestParam(required=false) Integer page,
             @RequestParam(required=false) Integer size,
             @RequestParam(required=false) String sortBy ,
@@ -39,7 +42,7 @@ public class BoardController {
     ) {
         if (isNotNullParam(page, size, sortBy, isAsc)) {
             page -= 1;
-            return boardService.getAllBoardSlice(page, size, sortBy, isAsc);
+            return Response.success(boardService.getAllBoardSlice(page, size, sortBy, isAsc));
         } else {
             throw new PrivateException(Code.PAGING_ERROR);
         }
@@ -51,13 +54,15 @@ public class BoardController {
 
     // 게시글 상세 조회
     @GetMapping("/boards/details/{boardId}")
-    public ExceptionResponseDto getBoard(@PathVariable Long boardId) {
+    @ResponseStatus(HttpStatus.OK)
+    public Response getBoard(@PathVariable Long boardId) {
         BoardGetResponseDto boardGetResponseDto = boardService.getBoardOne(boardId);
-        return new ExceptionResponseDto(Code.OK, boardGetResponseDto);
+        return Response.success(boardGetResponseDto);
     }
 
     // 게시글 작성
     @PostMapping("/board/write")
+    @ResponseStatus(HttpStatus.CREATED)
     public Response uploadBoard(@RequestPart("content") BoardRequestDto boardRequestDto,
                                 @RequestPart("imgUrl") List<MultipartFile> multipartFiles) {
         if (multipartFiles == null) {
@@ -72,15 +77,17 @@ public class BoardController {
 
     // 게시글 수정
     @PutMapping("/boards/details/{boardId}")
-    public ExceptionResponseDto updateBoard(@PathVariable Long boardId,@RequestPart("content") BoardRequestDto boardRequestDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateBoard(@PathVariable Long boardId,@RequestPart("content") BoardRequestDto boardRequestDto) {
         BoardUpdateResponseDto boardUpdateResponseDto = boardService.updateBoard(boardId, boardRequestDto);
-        return new ExceptionResponseDto(Code.OK, boardUpdateResponseDto);
+        return Response.success(boardUpdateResponseDto);
     }
 
     // 게시글 삭제
     @DeleteMapping("/boards/details/{boardId}")
-    public ExceptionResponseDto deleteBoard(@PathVariable Long boardId) {
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteBoard(@PathVariable Long boardId) {
         boardService.deleteBoard(boardId);
-        return new ExceptionResponseDto(Code.OK);
+        return Response.success();
     }
 }

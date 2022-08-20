@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // CSRF 설정 Disable
         http.csrf()
-                .ignoringAntMatchers("/h2-console/**")
+                .ignoringAntMatchers("/h2-console/**","favicon.ico")
                 .disable();
 
         // CORS
@@ -77,14 +77,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 
                 .antMatchers("/api/signup", "/api/login", "/api/reissue", "/api/user/{id}", "/api/board", "/api/board/write",
-                        "/api/board/{id}", "/api/board/{id}/update","/api/board/{id}/delete").permitAll()
+                        "/api/board/{id}", "/api/board/{id}/update","/api/board/{id}/delete", "/h2-console/**", "favicon.ico").permitAll()
 //
                 .antMatchers(HttpMethod.GET, "/api/user").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 
-                .antMatchers(HttpMethod.GET, "/api/board").authenticated()
+
+                .antMatchers(HttpMethod.GET, "/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+
+
+                .antMatchers(HttpMethod.GET, "/api/boards").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.POST, "/api/board/write").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/board/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/board/{category}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")

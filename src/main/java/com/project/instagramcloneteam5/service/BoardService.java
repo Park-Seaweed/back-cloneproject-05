@@ -44,15 +44,17 @@ public class BoardService {
 
     // 게시글 전체 조회
     @Transactional
-    public Map<String, List<BoardGetResponseDto>> getAllBoard() {
+    public List<BoardGetResponseDto> getAllBoard() {
         Map<String, List<BoardGetResponseDto>> listMap = new HashMap<>();
         List<BoardGetResponseDto> list = new ArrayList<>();
         for (Board board : boardRepository.findAllByOrderByCreatedAtDesc()) {
             BoardGetResponseDto main = getBoardOne(board.getId());
             list.add(main);
         }
+
         listMap.put("mainData", list);
-        return listMap;
+
+        return list;
     }
 
     // 무한 스크롤
@@ -69,9 +71,11 @@ public class BoardService {
             BoardGetResponseDto main = getBoardOne(board.getId());
             list.add(main);
         }
-        listMap.put("mainData", list);
+
+        listMap.put("boardList", list);
         return listMap;
     }
+
 
     // 게시글 상세 조회
     public BoardGetResponseDto getBoardOne(Long boardid) {

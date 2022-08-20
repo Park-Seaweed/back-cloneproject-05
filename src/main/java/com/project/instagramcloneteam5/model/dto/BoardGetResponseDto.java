@@ -12,14 +12,15 @@ public class BoardGetResponseDto {
     private String username;
     private String content;
     private List<String> imgUrl;
-    private List<CommentResponseDto> commentList;
+    private long commentCnt;
+
 
     public BoardGetResponseDto(Long boardId, Board board, List<String> imgUrl, List<CommentResponseDto> commentList) {
         this.boardId = boardId;
         this.username = board.getMember().getUsername();
         this.content = board.getContent();
         this.imgUrl = imgUrl;
-        this.commentList = commentList;
+        this.commentCnt = commentList.size();
     }
 
 
