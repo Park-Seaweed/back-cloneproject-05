@@ -7,12 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum Code {
     OK(HttpStatus.OK, "0", "정상"),
 
-    SIGNUP_EMAIL_FORM_ERROR(HttpStatus.BAD_REQUEST, "100", "email 형식을 맞춰주세요"),
-    SIGNUP_EMAIL_DUPLICATE_ERROR(HttpStatus.BAD_REQUEST, "101", "email 이 중복됩니다."),
-    SIGNUP_USERNAME_FORM_ERROR(HttpStatus.BAD_REQUEST, "102", "username 형식을 맞춰주세요"),
     SIGNUP_USERNAME_DUPLICATE_ERROR(HttpStatus.BAD_REQUEST, "103", "username 이 중복됩니다."),
 
-    LOGIN_EMAIL_FAIL(HttpStatus.NOT_FOUND, "110", "해당 하는 email 이 없습니다"),
     LOGIN_PASSWORD_FAIL(HttpStatus.BAD_REQUEST, "111", "Password가 틀렸습니다."),
     LOGIN_WRONG_SIGNATURE_JWT_TOKEN(HttpStatus.BAD_REQUEST, "112", "잘못된 JWT 서명입니다."),
     LOGIN_EXPIRED_JWT_TOKEN(HttpStatus.BAD_REQUEST, "113", "만료된 JWT 토큰입니다."),
