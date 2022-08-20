@@ -1,96 +1,143 @@
 package com.project.instagramcloneteam5.service;
 
-import com.project.instagramcloneteam5.dto.auth.MemberDto;
-import com.project.instagramcloneteam5.exception.MemberNotEqualsException;
-import com.project.instagramcloneteam5.exception.MemberNotFoundException;
+import com.project.instagramcloneteam5.config.jwt.TokenProvider;
+import com.project.instagramcloneteam5.dto.auth.*;
+import com.project.instagramcloneteam5.exception.LoginFailureException;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
-import com.project.instagramcloneteam5.model.Authority;
 import com.project.instagramcloneteam5.model.Member;
+import com.project.instagramcloneteam5.model.RefreshToken;
 import com.project.instagramcloneteam5.repository.MemberRepository;
-import com.project.instagramcloneteam5.service.validator.Validator;
-import lombok.RequiredArgsConstructor;
+
+import com.project.instagramcloneteam5.repository.RefreshTokenRepository;
+
+import lombok.AllArgsConstructor;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @Service
+@AllArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    private Validator validator;
-
-
-
-
-    public boolean signup(MemberRequestDto memberRequestDto) {
-        validator.validateInput(memberRequestDto);
+    private final TokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 
-        if (memberRepository.existsByUsername(memberRequestDto.getUsername()))
+
+
+    public boolean signUp(SignUpRequestDto signUpRequestDto) {
+
+        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
             throw new PrivateException(Code.SIGNUP_USERNAME_DUPLICATE_ERROR);
 
-        Member member = new Member( memberRequestDto.getEmail(),
-                memberRequestDto.getUsername(),
-                passwordEncoder.encode(memberRequestDto.getPassword()));
+        Member member = Member.builder()
+                .username(signUpRequestDto.getUsername())
+                .nickname(signUpRequestDto.getNickname())
+                .build();
 
         memberRepository.save(member);
 
         return true;
     }
 
-    @Transactional(readOnly = true)
-    public List<MemberDto> findAllUsers() {
-        List<Member> members = memberRepository.findAll();
-        List<MemberDto> memberDtos = new ArrayList<>();
-        for (Member member : members) {
-            memberDtos.add(MemberDto.toDto(member));
-        }
-        return memberDtos;
-    }
+    @Transactional
+    public TokenResponseDto logIn(LoginRequestDto req) {
+        Member member = memberRepository.findByUsername(req.getUsername()).orElseThrow(() -> new LoginFailureException());
 
-    @Transactional(readOnly = true)
-    public MemberDto findUser(Long id) {
-        return MemberDto.toDto(memberRepository.findById(id).orElseThrow(MemberNotFoundException::new));
+        validatePassword(req, member);
+
+        // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
+        UsernamePasswordAuthenticationToken authenticationToken = req.toAuthentication();
+
+        // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
+        //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+        // 4. RefreshToken 저장
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(authentication.getName())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+
+
+        TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
+                .id(member.getId())
+                .username(member.getUsername())
+                .nickname(member.getNickname())
+                .build();
+
+        // 5. 토큰 발급
+        return tokenResponseDto;
     }
 
 
     @Transactional
-    public MemberDto editUserInfo(Long id, MemberDto updateInfo) {
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-
-        // 권한 처리
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.getName().equals(member.getUsername())) {
-            throw new MemberNotEqualsException();
-        }else{
-            member.setNickname(updateInfo.getNickname());
-            return MemberDto.toDto(member);
+    public TokenResponseDto reissue(TokenRequestDto tokenRequestDto) {
+//         1. Refresh Token 검증
+        if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {
+            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
         }
 
+        // 2. Access Token 에서 Member ID 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
+
+        // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+        // 4. Refresh Token 일치하는지 검사
+        if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
+            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+        }
+
+        // 5. 새로운 토큰 생성
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+
+
+        // 6. 저장소 정보 업데이트
+        RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
+        refreshTokenRepository.save(newRefreshToken);
+
+
+        TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
+                .build();
+
+        return tokenResponseDto;
     }
 
 
-    @Transactional
-    public void deleteUserInfo(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
+//    private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
+//        if (memberRepository.existsByUsername(signUpRequestDto.getUsername()))
+//            throw new MemberUsernameAlreadyExistsException(signUpRequestDto.getUsername());
+//
+//    }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String auth = String.valueOf(authentication.getAuthorities());
-        String authByAdmin = "[" + Authority.ROLE_ADMIN + "]";
-
-        if (authentication.getName().equals(member.getUsername()) || auth.equals(authByAdmin)) {
-            memberRepository.deleteById(id);
-        } else {
-            throw new MemberNotEqualsException();
+    private void validatePassword(LoginRequestDto loginRequestDto, Member member) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
+            throw new LoginFailureException();
         }
     }
 }

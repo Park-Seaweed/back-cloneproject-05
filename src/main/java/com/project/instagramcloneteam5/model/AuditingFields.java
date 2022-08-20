@@ -1,6 +1,10 @@
 package com.project.instagramcloneteam5.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,9 +23,10 @@ import java.time.LocalDate;
 @MappedSuperclass
 public class AuditingFields {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @CreatedDate
+    @CreatedDate // 최초 생성 시점
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(nullable = false, updatable = false)
     private LocalDate createdAt; // 날짜
 
@@ -30,9 +35,10 @@ public class AuditingFields {
 //    @Column(nullable = false, updatable = false, length = 100)
 //    private String createdBy; //생성자
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @LastModifiedDate
+    @LastModifiedDate // 마지막 변경 시점
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(nullable = false)
     private LocalDate modifiedAt; // 날짜
 

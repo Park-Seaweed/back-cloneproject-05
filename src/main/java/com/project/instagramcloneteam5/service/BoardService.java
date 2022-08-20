@@ -10,8 +10,10 @@ import com.project.instagramcloneteam5.model.Member;
 import com.project.instagramcloneteam5.model.dto.BoardGetResponseDto;
 import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
 import com.project.instagramcloneteam5.model.dto.BoardUpdateResponseDto;
+import com.project.instagramcloneteam5.model.dto.CommentResponseDto;
 import com.project.instagramcloneteam5.repository.BoardRepository;
 import com.project.instagramcloneteam5.repository.CommentRepository;
+import com.project.instagramcloneteam5.repository.ImageRepository;
 import com.project.instagramcloneteam5.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -74,7 +76,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardid).orElseThrow(
                 () -> new PrivateException(Code.NOT_FOUND_POST));
 
-        List<String> imgUrl = imgRepository.findAllByBoard(board)
+        List<String> imgUrl = imageRepository.findAllByBoard(board)
                 .stream()
                 .map(Image::getImgUrl)
                 .collect(Collectors.toList());
@@ -158,8 +160,8 @@ public class BoardService {
         if (!board.getMember().equals(member)) {
             throw new PrivateException(Code.WRONG_ACCESS_POST_DELETE);
         }
-        commentRepository.deleteAll(board.getComment());
-        s3Service.delete(board.getImagList());
+        commentRepository.deleteAll(board.getCommentList());
+        s3Service.delete(board.getImageList());
         boardRepository.delete(board);
     }
 }
