@@ -12,7 +12,6 @@ public class BoardGetResponseDto {
     private String username;
     private String content;
     private List<String> imgUrl;
-    private String modifiedAt;
     private List<CommentResponseDto> commentList;
 
     public BoardGetResponseDto(Long boardId, Board board, List<String> imgUrl, List<CommentResponseDto> commentList) {
@@ -20,12 +19,9 @@ public class BoardGetResponseDto {
         this.username = board.getMember().getUsername();
         this.content = board.getContent();
         this.imgUrl = imgUrl;
-        this.modifiedAt = formatter(board.getModifiedAt());
         this.commentList = commentList;
     }
 
-    public String formatter(LocalDateTime localDateTime) {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(localDateTime);
-    }
+
 }
 
