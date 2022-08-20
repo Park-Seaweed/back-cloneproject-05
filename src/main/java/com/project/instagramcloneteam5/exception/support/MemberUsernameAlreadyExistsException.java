@@ -1,4 +1,4 @@
-package com.project.instagramcloneteam5.exception;
+package com.project.instagramcloneteam5.exception.support;
 
 public class MemberUsernameAlreadyExistsException extends RuntimeException{
 

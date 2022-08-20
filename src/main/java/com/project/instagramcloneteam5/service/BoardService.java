@@ -1,6 +1,8 @@
 package com.project.instagramcloneteam5.service;
 
 import com.project.instagramcloneteam5.config.SecurityUtil;
+import com.project.instagramcloneteam5.exception.support.BoardNotFoundException;
+import com.project.instagramcloneteam5.exception.support.MemberNotFoundException;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
 import com.project.instagramcloneteam5.model.Board;
@@ -73,8 +75,7 @@ public class BoardService {
 
     // 게시글 상세 조회
     public BoardGetResponseDto getBoardOne(Long boardid) {
-        Board board = boardRepository.findById(boardid).orElseThrow(
-                () -> new PrivateException(Code.NOT_FOUND_POST));
+        Board board = boardRepository.findById(boardid).orElseThrow(BoardNotFoundException::new);
 
         List<String> imgUrl = imageRepository.findAllByBoard(board)
                 .stream()
@@ -97,9 +98,7 @@ public class BoardService {
 
         String username = SecurityUtil.getCurrentUsername();
 
-        Member member = memberRepository.findMemberByUsername(username).orElseThrow(
-                () -> new PrivateException(Code.NOT_FOUND_MEMBER)
-        );
+        Member member = memberRepository.findMemberByUsername(username).orElseThrow(MemberNotFoundException::new);
         String content = res.getContent();
 
         Board board = new Board(content, member);

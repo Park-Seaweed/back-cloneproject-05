@@ -2,7 +2,8 @@ package com.project.instagramcloneteam5.service;
 
 import com.project.instagramcloneteam5.config.jwt.TokenProvider;
 import com.project.instagramcloneteam5.dto.auth.*;
-import com.project.instagramcloneteam5.exception.LoginFailureException;
+import com.project.instagramcloneteam5.exception.support.LoginFailureException;
+import com.project.instagramcloneteam5.exception.support.MemberNotFoundException;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
 import com.project.instagramcloneteam5.model.Member;
@@ -21,8 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -55,7 +55,7 @@ public class MemberService {
 
     @Transactional
     public TokenResponseDto logIn(LoginRequestDto req) {
-        Member member = memberRepository.findByUsername(req.getUsername()).orElseThrow(() -> new LoginFailureException());
+        Member member = memberRepository.findByUsername(req.getUsername()).orElseThrow(MemberNotFoundException::new);
 
         validatePassword(req, member);
 
@@ -66,10 +66,11 @@ public class MemberService {
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
+
+        // 4. 인증 정보를 기반으로 JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-        // 4. RefreshToken 저장
+        // 5. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(authentication.getName())
                 .value(tokenDto.getRefreshToken())
@@ -77,14 +78,14 @@ public class MemberService {
 
         refreshTokenRepository.save(refreshToken);
 
+        Optional<Member> loginUserName = memberRepository.findByUsername(req.getUsername());
 
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
                 .accessToken(tokenDto.getAccessToken())
                 .refreshToken(tokenDto.getRefreshToken())
-                .id(member.getId())
-                .username(member.getUsername())
-                .nickname(member.getNickname())
+                .username(String.valueOf(loginUserName))
                 .build();
+
 
         // 5. 토큰 발급
         return tokenResponseDto;
