@@ -13,24 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-    private final MessageSource messageSource;
 
-    //    @Value("${upload.image.location}")
-//    private String location = "이미지 업로드 경로";
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/image/**")
-//                .addResourceLocations("file:" + location)
-//                .setCacheControl(CacheControl.maxAge(Duration.ofHours(1L)).cachePublic());
-//    }
-
-    @Override
-    public Validator getValidator() {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource);
-        return bean;
-    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

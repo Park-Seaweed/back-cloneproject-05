@@ -13,7 +13,6 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "member_id")
 @Entity
 public class Member extends AuditingFields {
     @Id
@@ -36,7 +35,7 @@ public class Member extends AuditingFields {
 
 
     @Builder
-    public Member(String username, String password, String nickname, Authority authority) {
+    public Member(String username, String password,String nickname, Authority authority) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;

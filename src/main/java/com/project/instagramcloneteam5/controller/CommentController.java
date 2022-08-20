@@ -20,7 +20,7 @@ public class CommentController {
 
     // Comment 작성
     @PostMapping("/boards/details/{boardId}")
-    public ExceptionResponseDto postComment(@PathVariable(name="postId") Long boardId, @RequestBody CommentRequestDto commentRequestDto) {
+    public ExceptionResponseDto postComment(@PathVariable(name="boardId") Long boardId, @RequestBody CommentRequestDto commentRequestDto) {
         CommentResponseDto commentResponseDto = commentService.boardComment(boardId, commentRequestDto);
         return new ExceptionResponseDto(Code.OK, commentResponseDto);
     }
