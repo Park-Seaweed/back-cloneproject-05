@@ -1,66 +1,3 @@
-<<<<<<< HEAD
-#spring:
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/
-#    username: root
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#      naming:
-#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#      use-new-id-generator-mappings: false
-#    database: mysql
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
-#        #use_sql_comments: true
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher # about swagger
-#    hiddenmethod:
-#      filter:
-#        enabled: true
-=======
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/instaclone
-    username: root
-    password: gusdnr89ok!M
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      use-new-id-generator-mappings: false
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        #use_sql_comments: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher # about swagger
-    hiddenmethod:
-      filter:
-        enabled: true
->>>>>>> 4676bc146725ecca2906fa26fc4d9f206db7a91d
-
-
-
-
-# HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
-# Secret ?? ?? ???? Base64 ? ???? ? ?? (?? ???? ???? ??? ??? ??)
-# $ echo 'spring-boot-security-jwt-tutorial-jiwoon-spring-boot-security-jwt-tutorial' | base64
-jwt:
-  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
-<<<<<<< HEAD
 spring:
   h2:
     console:
@@ -78,29 +15,25 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-#  h2:
-#    console:
-#      enabled: true
-=======
+        #use_sql_comments: true
 
->>>>>>> 4676bc146725ecca2906fa26fc4d9f206db7a91d
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
+
 cloud:
   aws:
     region:
       static: ap-northeast-2
     credentials:
-<<<<<<< HEAD
-      accessKey: AKIARWUFJKBUXBWFWQNF
-      secretKey: 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
-
-    s3:
-
-      bucket: cicd-test-s3-bucket
-=======
       accessKey: AKIARWUFJKBU7XCQ2NEL
       secretKey: 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
 
     s3:
 
       bucket: myclonebucket
->>>>>>> 4676bc146725ecca2906fa26fc4d9f206db7a91d
+
+
+
+# HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
+# Secret ?? ?? ???? Base64 ? ???? ? ?? (?? ???? ???? ??? ??? ??)
+# $ echo 'spring-boot-security-jwt-tutorial-jiwoon-spring-boot-security-jwt-tutorial' | base64

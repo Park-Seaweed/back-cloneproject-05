@@ -26,6 +26,8 @@ public class Board extends AuditingFields{
     @Column
     private int likeCount;
 
+
+
     @Transient
     private final List<Image> imageList = new ArrayList<>();
 

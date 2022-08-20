@@ -1,29 +1,36 @@
 spring:
+  h2:
+    console:
+      enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3306/
-    username: root
+    url: jdbc:h2:./myselectdb;AUTO_SERVER=TRUE;MODE=MYSQL;
+    driver-class-name: org.h2.Driver
+    username: sa
     password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      use-new-id-generator-mappings: false
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      ddl-auto: create-drop
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
+        show_sql: true
         #use_sql_comments: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher # about swagger
-    hiddenmethod:
-      filter:
-        enabled: true
 
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    credentials:
+      accessKey: AKIARWUFJKBU7XCQ2NEL
+      secretKey: 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
+
+    s3:
+
+      bucket: myclonebucket
 
 
 
