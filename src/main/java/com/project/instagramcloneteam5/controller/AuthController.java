@@ -4,11 +4,17 @@ package com.project.instagramcloneteam5.controller;
 import com.project.instagramcloneteam5.dto.auth.LoginRequestDto;
 import com.project.instagramcloneteam5.dto.auth.SignUpRequestDto;
 import com.project.instagramcloneteam5.dto.auth.TokenRequestDto;
+import com.project.instagramcloneteam5.dto.auth.TokenResponseDto;
+import com.project.instagramcloneteam5.exception.advice.Code;
+import com.project.instagramcloneteam5.exception.advice.ExceptionResponseDto;
 import com.project.instagramcloneteam5.response.Response;
 import com.project.instagramcloneteam5.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpHeaders;
 
 import static com.project.instagramcloneteam5.response.Response.success;
 
@@ -19,11 +25,11 @@ public class AuthController {
 
     private final MemberService memberService;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public Response register(@RequestBody SignUpRequestDto signUpRequestDto) {
-        memberService.signUp(signUpRequestDto);
-        return success();
+        return Response.success(memberService.signUp(signUpRequestDto));
+
     }
 
     @PostMapping("/login")
@@ -33,8 +39,8 @@ public class AuthController {
     }
 
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/reissue")
+    @ResponseStatus(HttpStatus.OK)
     public Response reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return success(memberService.reissue(tokenRequestDto));
     }

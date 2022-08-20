@@ -9,7 +9,6 @@ public enum Code {
 
     SIGNUP_USERNAME_DUPLICATE_ERROR(HttpStatus.BAD_REQUEST, "103", "username 이 중복됩니다."),
 
-    LOGIN_EMAIL_FAIL(HttpStatus.NOT_FOUND, "110", "해당 하는 email 이 없습니다"),
     LOGIN_PASSWORD_FAIL(HttpStatus.BAD_REQUEST, "111", "Password가 틀렸습니다."),
     LOGIN_WRONG_SIGNATURE_JWT_TOKEN(HttpStatus.BAD_REQUEST, "112", "잘못된 JWT 서명입니다."),
     LOGIN_EXPIRED_JWT_TOKEN(HttpStatus.BAD_REQUEST, "113", "만료된 JWT 토큰입니다."),
