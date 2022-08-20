@@ -54,7 +54,7 @@ public class BoardService {
     }
 
     // 무한 스크롤
-    public Map<String, List<BoardGetResponseDto>> getAllPostSlice(int page, int size, String sortBy, Boolean isAsc) {
+    public Map<String, List<BoardGetResponseDto>> getAllBoardSlice(int page, int size, String sortBy, Boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
