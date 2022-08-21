@@ -15,7 +15,7 @@ public class CommitController {
     private final CommitService commitService;
 
     // Commit 작성
-    @PostMapping("/boards/comment/details/{commentId}")
+    @PostMapping("/board/details/{commentId}")
     public ExceptionResponseDto boardCommit(@PathVariable(name="commentId") Long commentId, @RequestBody CommitRequestDto commitRequestDto) {
         CommitResponseDto commitResponseDto = commitService.boardCommit(commentId, commitRequestDto);
         return new ExceptionResponseDto(Code.OK, commitResponseDto);

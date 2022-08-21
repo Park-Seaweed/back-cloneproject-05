@@ -53,8 +53,8 @@ public class BoardController {
     // 게시글 상세 조회
     @GetMapping("/boards/details/{boardId}")
     public ExceptionResponseDto getBoard(@PathVariable Long boardId) {
-        BoardDetailsResponseDto boardDetailsResponseDto = boardService.getBoardDetailsOne(boardId);
-        return new ExceptionResponseDto(Code.OK, boardDetailsResponseDto);
+        BoardGetResponseDto boardGetResponseDto= boardService.getBoardOne(boardId);
+        return new ExceptionResponseDto(Code.OK, boardGetResponseDto);
     }
 
     // 게시글 작성

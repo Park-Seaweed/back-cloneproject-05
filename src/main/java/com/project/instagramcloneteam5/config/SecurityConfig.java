@@ -83,22 +83,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                // BOARD 전체조회
                 .antMatchers(HttpMethod.GET, "/api/boards").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.GET, "/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST,"/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST,"/boards/comment/details/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.DELETE,"/boards/details/commit/{commitId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-            /*
-            *
-            * @param sdsdsd
-            *
-            *
-            * */
-
-
-
-                .antMatchers(HttpMethod.GET, "/api/board").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/board/write").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                // BOARD 상세조회
+                .antMatchers(HttpMethod.GET, "/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.PUT,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+                // COMMENT 쓰기, 삭제
+                .antMatchers(HttpMethod.POST,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/comment/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+                // COMMIT 쓰기, 삭제
+
+                .antMatchers(HttpMethod.POST,"/api/board/details/commit/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/commit/{commitId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/board/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/board/{category}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.POST, "/api/board/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")

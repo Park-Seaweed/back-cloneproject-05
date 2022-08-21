@@ -5,18 +5,9 @@ import com.project.instagramcloneteam5.exception.support.BoardNotFoundException;
 import com.project.instagramcloneteam5.exception.support.MemberNotFoundException;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
-import com.project.instagramcloneteam5.model.Board;
-import com.project.instagramcloneteam5.model.Comment;
-import com.project.instagramcloneteam5.model.Image;
-import com.project.instagramcloneteam5.model.Member;
-import com.project.instagramcloneteam5.model.dto.BoardGetResponseDto;
-import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
-import com.project.instagramcloneteam5.model.dto.BoardUpdateResponseDto;
-import com.project.instagramcloneteam5.model.dto.CommentResponseDto;
-import com.project.instagramcloneteam5.repository.BoardRepository;
-import com.project.instagramcloneteam5.repository.CommentRepository;
-import com.project.instagramcloneteam5.repository.ImageRepository;
-import com.project.instagramcloneteam5.repository.MemberRepository;
+import com.project.instagramcloneteam5.model.*;
+import com.project.instagramcloneteam5.model.dto.*;
+import com.project.instagramcloneteam5.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +30,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
+    private final CommitRepository commitRepository;
     private final S3Service s3Service;
 
 
@@ -74,8 +66,8 @@ public class BoardService {
     }
 
     // 게시글 상세 조회
-    public BoardGetResponseDto getBoardOne(Long boardid) {
-        Board board = boardRepository.findById(boardid).orElseThrow(BoardNotFoundException::new);
+    public BoardGetResponseDto getBoardOne(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(BoardNotFoundException::new);
 
         List<String> imgUrl = imageRepository.findAllByBoard(board)
                 .stream()
@@ -87,7 +79,7 @@ public class BoardService {
         for (Comment comment : findCommentByBoard) {
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
-        return new BoardGetResponseDto(boardid, board, imgUrl, commentResponseDtoList);
+        return new BoardGetResponseDto(boardId, board, imgUrl, commentResponseDtoList);
     }
 
     // 게시글 작성
