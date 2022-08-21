@@ -3,6 +3,7 @@ package com.project.instagramcloneteam5.controller;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.ExceptionResponseDto;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
+import com.project.instagramcloneteam5.model.dto.BoardDetailsResponseDto;
 import com.project.instagramcloneteam5.model.dto.BoardGetResponseDto;
 import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
 import com.project.instagramcloneteam5.model.dto.BoardUpdateResponseDto;
@@ -52,8 +53,8 @@ public class BoardController {
     // 게시글 상세 조회
     @GetMapping("/boards/details/{boardId}")
     public ExceptionResponseDto getBoard(@PathVariable Long boardId) {
-        BoardGetResponseDto boardGetResponseDto = boardService.getBoardOne(boardId);
-        return new ExceptionResponseDto(Code.OK, boardGetResponseDto);
+        BoardDetailsResponseDto boardDetailsResponseDto = boardService.getBoardDetailsOne(boardId);
+        return new ExceptionResponseDto(Code.OK, boardDetailsResponseDto);
     }
 
     // 게시글 작성

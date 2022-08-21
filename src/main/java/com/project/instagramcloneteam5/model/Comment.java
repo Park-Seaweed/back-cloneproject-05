@@ -22,9 +22,6 @@ public class Comment extends AuditingFields{
     @Column(nullable = false)
     private String comment;
 
-    @Column
-    private int likeCount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

@@ -17,7 +17,20 @@ spring:
         show_sql: true
         #use_sql_comments: true
 
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
 
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    credentials:
+      accessKey: AKIARWUFJKBU7XCQ2NEL
+      secretKey: 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
+
+    s3:
+
+      bucket: myclonebucket
 
 
 

@@ -117,7 +117,7 @@ public class BoardService {
             throw new PrivateException(Code.WRONG_INPUT_IMAGE);
         }
     }
-
+//TODO:
     // 게시글 수정
     @Transactional
     public BoardUpdateResponseDto updateBoard(Long boardId, BoardRequestDto boardRequestDto) {

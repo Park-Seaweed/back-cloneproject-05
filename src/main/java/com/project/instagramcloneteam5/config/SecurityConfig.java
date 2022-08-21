@@ -83,16 +83,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                //TODO:
-                /*
-                *
-                * @param
-                *
-                *
-                * */
                 .antMatchers(HttpMethod.GET, "/api/boards").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.POST,"/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST,"/boards/comment/details/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/boards/details/commit/{commitId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+            /*
+            *
+            * @param sdsdsd
+            *
+            *
+            * */
 
 
 
