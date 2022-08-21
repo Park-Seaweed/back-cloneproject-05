@@ -3,6 +3,7 @@ package com.project.instagramcloneteam5.service;
 import com.project.instagramcloneteam5.config.SecurityUtil;
 import com.project.instagramcloneteam5.exception.advice.Code;
 import com.project.instagramcloneteam5.exception.advice.PrivateException;
+import com.project.instagramcloneteam5.model.Board;
 import com.project.instagramcloneteam5.model.Comment;
 import com.project.instagramcloneteam5.model.Commit;
 import com.project.instagramcloneteam5.model.Member;

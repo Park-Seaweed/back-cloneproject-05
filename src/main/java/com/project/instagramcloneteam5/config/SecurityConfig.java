@@ -76,35 +76,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers("/api/signup", "/api/login", "/api/reissue","/h2-console/**", "/login/**", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico" ,"/api/user/{id}", "/api/board", "/api/board/write",
-                        "/api/board/{id}", "/api/board/{id}/update","/api/board/{id}/delete").permitAll()
+                .antMatchers("/api/signup", "/api/login", "/api/reissue","/h2-console/**", "/login/**", "/js/**", "/css/**", "/image/**", "/fonts/**", "/favicon.ico",
+                        "/api/boards/**","/api/board/**","/api/users").permitAll()
 
+                // TODO: 마이페이지 만들 때 혹시 추가 할 수 있는 유저정보 CRUD
+                .antMatchers(HttpMethod.GET, "/api/users").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/user").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.GET, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+                // BOARD 전체조회
                 .antMatchers(HttpMethod.GET, "/api/boards").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.GET, "/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST,"/api/boards/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST,"/boards/comment/details/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.DELETE,"/boards/details/commit/{commitId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-            /*
-            *
-            * @param sdsdsd
-            *
-            *
-            * */
-
-
-
-                .antMatchers(HttpMethod.GET, "/api/board").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/board/write").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.GET, "/api/board/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.GET, "/api/board/{category}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.POST, "/api/board/{id}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.PUT, "/api/board/{id}/update").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.DELETE, "/api/board/{id}/delete").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.DELETE, "/api/board/{cotudyid}/outstudy").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                // BOARD 상세조회
+                .antMatchers(HttpMethod.GET, "/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.PUT,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+                // COMMENT 쓰기, 삭제
+                .antMatchers(HttpMethod.POST,"/api/board/details/{boardId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/comment/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+                // COMMIT 쓰기, 삭제
+
+                .antMatchers(HttpMethod.POST,"/api/board/details/commit/{commentId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.DELETE,"/api/board/details/commit/{commitId}").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
+
+
+
 
 
                 .anyRequest().hasAnyRole("ROLE_ADMIN")

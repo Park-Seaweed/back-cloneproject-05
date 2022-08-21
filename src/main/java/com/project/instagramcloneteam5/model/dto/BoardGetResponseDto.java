@@ -14,13 +14,14 @@ public class BoardGetResponseDto {
     private String content;
 
     private int commentCount;
-    private List<CommentResponseDto> commentList;
 
-    private List<CommitResponseDto> commitList;
     private List<String> imgUrl;
 
+    private List<CommentResponseDto> commentList;
 
-    @Builder
+
+
+
     public BoardGetResponseDto(Long boardId, Board board, List<String> imgUrl, List<CommentResponseDto> commentList) {
         this.boardId = boardId;
         this.username = board.getMember().getUsername();

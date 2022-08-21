@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="instaclone@localhost" uuid="988fb63e-1108-4c93-bb3c-b0686750d311">
+    <data-source source="LOCAL" name="myproject@myproject-db.cewnbcwdkrvh.ap-northeast-2.rds.amazonaws.com" uuid="6e9f6b7d-16ab-4c19-90b8-52eb43c43918">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/instaclone</jdbc-url>
+      <jdbc-url>jdbc:mysql://myproject-db.cewnbcwdkrvh.ap-northeast-2.rds.amazonaws.com:3306/myproject</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

@@ -27,6 +27,8 @@ public class Commit {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
@@ -39,5 +41,6 @@ public class Commit {
         this.comment = comment;
         this.content = commitRequestDto.getComment();
         this.member = member;
+
     }
 }

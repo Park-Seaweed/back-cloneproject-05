@@ -5,6 +5,7 @@ import com.project.instagramcloneteam5.exception.advice.PrivateException;
 import com.project.instagramcloneteam5.model.dto.BoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -23,9 +24,6 @@ public class Board extends AuditingFields{
     @Column(nullable = false)
     private String content;
 
-    @Column
-    private int likeCount;
-
 
 
     @Transient
@@ -37,6 +35,7 @@ public class Board extends AuditingFields{
 
     @OneToMany
     private List<Comment> commentList = new ArrayList<>();
+
 
     @OneToMany
     private List<Heart> heartsList = new ArrayList<>();
